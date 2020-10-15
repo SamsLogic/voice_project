@@ -203,6 +203,7 @@ def lrfn(epoch, lr):
 
 lr_scheduler = tf.keras.callbacks.LearningRateScheduler(lrfn,verbose=1)
 
+counter = 1
 a = []
 lr = 0.001
 for i in range(EPOCHS):
