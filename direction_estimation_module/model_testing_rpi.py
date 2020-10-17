@@ -72,20 +72,21 @@ while True:
             b = np.fromstring(data,dtype=np.int16)[1::4]
             c = np.fromstring(data,dtype=np.int16)[2::4]
             d = np.fromstring(data,dtype=np.int16)[3::4]
-            frames0.append(np.array(a,dtype=np.float32)/255)
-            frames1.append(np.array(b,dtype=np.float32)/255)
-            frames2.append(np.array(c,dtype=np.float32)/255)
-            frames3.append(np.array(d,dtype=np.float32)/255)
-        frames0 = np.array(frames0,dtype=np.float32)
-        frames1 = np.array(frames1,dtype=np.float32)
-        frames2 = np.array(frames2,dtype=np.float32)
-        frames3 = np.array(frames3,dtype=np.float32)
+            frames0.append(a)
+            frames1.append(b)
+            frames2.append(c)
+            frames3.append(d)
+        frames0 = np.array(frames0,dtype=np.int16)
+        frames1 = np.array(frames1,dtype=np.int16)
+        frames2 = np.array(frames2,dtype=np.int16)
+        frames3 = np.array(frames3,dtype=np.int16)
         frames0 = np.reshape(frames0,(184,256))
         frames1 = np.reshape(frames1,(184,256))
         frames2 = np.reshape(frames2,(184,256))
         frames3 = np.reshape(frames3,(184,256))
-        pred = model.predict(np.array([frames0,frames1,frames2,frames3],dtype=np.float32))
+        pred = model.predict(np.array([frames0,frames1,frames2,frames3],dtype=np.int16))
         print(pred)
+        
         if pred[0] > 0.88 or pred[1]>0.88 or pred[2]>0.88 or pred[3]>0.88:
             print("Hello")
             frames0_dir = np.reshape(frames0,(184,256,1))
@@ -93,7 +94,7 @@ while True:
             frames2_dir = np.reshape(frames2,(184,256,1))
             frames3_dir = np.reshape(frames3,(184,256,1))
             dir_frame = [frames0_dir,frames1_dir,frames2_dir,frames3_dir]
-            dir_frame = np.array(dir_frame,dtype=np.float32)
+            dir_frame = np.array(dir_frame,dtype=np.int16)
             dir_frame = np.reshape(dir_frame,(1,*dir_frame.shape))
             print(dir_frame.shape)
             

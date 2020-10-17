@@ -78,56 +78,6 @@ class Data_Generator(tf.keras.utils.Sequence):
     def getdata(self, music_id_list):
         X = np.zeros((self.batch_size//4,4,*self.dim))
         X1 = np.zeros((4,*self.dim))
-        for l in range(self.batch_size//4):
-            for k in  range(4):
-                for m_id in music_id_list:
-                    #audio = wave.open(f'/content/drive/My Drive/voice_model_train/direction_recordings/{m_id}','r')
-                    audio = wave.open(f'direction_recordings/{m_id}','r')
-                    frames = []
-                    for j in range(self.dim[0]):
-                        au = audio.readframes(self.dim[1])
-                        au = np.fromstring(au,np.int16)
-                        au = np.array(au,np.float32)/255
-                        frames.append(au)
-                    frames = np.reshape(frames,(self.dim[0],self.dim[1],self.dim[2]))
-                    audio.close()
-                X1[k,] = np.array(frames,dtype=np.float32)
-            X[l,] = np.array(X1,dtype=np.float32)
-        return X
-        
-    def __getitem__(self,index):
-        indices = self.indices[index*self.batch_size:(index+1)*self.batch_size]
-        
-        music_id_list = [self.music_ids.values[k] for k in indices]
-        X = self.getdata(music_id_list)
-        #X = np.reshape(X,(self.batch_size,*self.dim,1))
-        if self.train == True:
-            y = [self.target.values[k] for k in indices[::4]]
-            y = np.array(y).astype(np.float32)
-            return X,y
-        return X
-    
-    def __len__(self):
-        return int(np.floor(len(self.indices)/self.batch_size))
-
-
-class Data_Generator(tf.keras.utils.Sequence):
-    
-    def __init__(self,batch_size,music_ids,dim,target=None,train=True,augment=False):
-        self.batch_size = batch_size
-        self.music_ids = music_ids
-        self.augment = augment
-        self.dim = dim
-        self.target = target
-        self.indices = range(len(self.music_ids))
-        self.train = train
-    
-    def on_epoch_end(self):
-        return self.indices
-    
-    def getdata(self, music_id_list):
-        X = np.zeros((self.batch_size//4,4,*self.dim))
-        X1 = np.zeros((4,*self.dim))
         counter = 1
         for l in range(self.batch_size//4):
             for i, m_id in enumerate(music_id_list):
@@ -137,13 +87,13 @@ class Data_Generator(tf.keras.utils.Sequence):
                 for j in range(self.dim[0]):
                     au = audio.readframes(self.dim[1])
                     au = np.fromstring(au,np.int16)
-                    au = np.array(au,np.float32)/255
                     frames.append(au)
+                frames = np.array(frames,dtype=np.int16)
                 frames = np.reshape(frames,(self.dim[0],self.dim[1],self.dim[2]))
                 audio.close()              
-                X1[counter-1,] = np.array(frames,dtype=np.float32)
+                X1[counter-1,] = frames
                 if counter%4 ==0:
-                    X[l,] = np.array(X1,dtype=np.float32)
+                    X[l,] = np.array(X1,dtype=np.int16)
                     counter = 0
                 counter+=1
         return X
@@ -156,7 +106,7 @@ class Data_Generator(tf.keras.utils.Sequence):
         #X = np.reshape(X,(self.batch_size,*self.dim,1))
         if self.train == True:
             y = [self.target.values[k] for k in indices[::4]]
-            y = np.array(y).astype(np.float32)
+            y = np.array(y).astype(np.int16)
             return X,y
         return X
     
@@ -225,7 +175,7 @@ history = model.fit(train_gen,
 
 #model.save('/content/drive/My Drive/voice_model_train/direction_model_lstm.h5')
 
-model.save('direction_model_lstm.h5')
+model.save('direction_model_lstm_v2.h5')
 
 test_gen = Data_Generator(BATCH_SIZE,
                            df.name,DIM,
