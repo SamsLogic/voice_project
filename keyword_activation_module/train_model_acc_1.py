@@ -7,8 +7,8 @@ Original file is located at
     https://colab.research.google.com/drive/1Fp7ZySLSg7fv2BwmYhqvh-sEgU_e7kFQ
 """
 
-!apt install libasound2-dev portaudio19-dev libportaudio2 libportaudiocpp0 ffmpeg
-!pip install pyaudio
+#!apt install libasound2-dev portaudio19-dev libportaudio2 libportaudiocpp0 ffmpeg
+#!pip install pyaudio
 
 import tensorflow as tf
 import tensorflow.keras.layers as L
@@ -24,14 +24,14 @@ from sklearn.preprocessing import MinMaxScaler
 import matplotlib.pyplot as plt
 import wave
 
-audio = wave.open('/content/drive/My Drive/voice_model_train/recordings/100.wav')
-
+#audio = wave.open('/content/drive/My Drive/voice_model_train/recordings/100.wav')
+audio = wave.open('recordings/100.wav')
 audio.getnframes()
 
 BATCH_SIZE = 16
 SAMPLE_RATE = 16000
 CHANNELS = 1
-EPOCHS = 40
+EPOCHS = 15
 RECORD_SECONDS = 3
 BUFFER_SIZE = 256
 FRAMES = audio.getnframes()
@@ -39,7 +39,8 @@ DIM = (int(FRAMES//BUFFER_SIZE),BUFFER_SIZE)
 
 minmax = MinMaxScaler([0,1])
 
-df = pd.read_csv('/content/drive/My Drive/voice_model_train/voice_data.csv')
+#df = pd.read_csv('/content/drive/My Drive/voice_model_train/voice_data.csv')
+df = pd.read_csv('voice_data.csv')
 
 df.label.value_counts()
 
@@ -50,154 +51,6 @@ config.gpu_options.allow_growth = True
 session = tf.compat.v1.Session(config=config)
 tf.compat.v1.keras.backend.set_session(session)
 
-class Data_Generator(tf.keras.utils.Sequence):
-    
-    def __init__(self,batch_size,music_ids,dim,target=None,train=True,augment=False):
-        self.batch_size = batch_size
-        self.music_ids = music_ids
-        self.augment = augment
-        self.dim = dim
-        self.target = target
-        self.indices = range(len(self.music_ids))
-        self.train = train
-    
-    def on_epoch_end(self):
-        return self.indices
-    
-    def getdata(self, music_id_list):
-        X = np.zeros((self.batch_size,*self.dim))
-        for i, m_id in enumerate(music_id_list):
-            try:
-                audio = wave.open(f'/content/drive/My Drive/voice_model_train/recordings/{m_id}','r')
-                frames = []
-                for j in range(self.dim[0]):
-                    au = audio.readframes(self.dim[1])
-                    frames.append(float(np.fromstring(au,np.int16))/255)
-                if audio.getnframes() != self.dim[0]*self.dim[1]:
-                    for k in range(audio.getnframes()//BUFFER_SIZE,self.dim[0]):
-                        frames[k] = np.zeros(self.dim[1],dtype=np.int16)
-                frames = np.array(frames,dtype=np.float32)
-            except:
-                continue
-            X[i,] = frames
-            audio.close()
-        return X
-    
-    def __getitem__(self,index):
-        indices = self.indices[index*self.batch_size:(index+1)*self.batch_size]
-        
-        music_id_list = [self.music_ids.values[k] for k in indices]
-        X = self.getdata(music_id_list)
-        #X = np.reshape(X,(len(X),*self.dim,1))
-        if self.train == True:
-            y = [self.target.values[k] for k in indices]
-            y = np.array(y).astype(np.float32)
-            return X,y
-        return X
-    
-    def __len__(self):
-        return int(np.floor(len(self.indices)/self.batch_size))
-
-def build_model():
-        
-    inp2 = L.Input(shape=(*DIM,1,),name='conv_input')
-    
-    x = L.Conv2D(32,5,activation='relu')(inp2)
-    
-    x = L.Conv2D(64,5,activation='relu')(x)
-    
-    x = L.BatchNormalization()(x)
-    
-    x = L.MaxPooling2D()(x)
-    
-    x1 = L.Dropout(0.3)(x)
-    
-    x = L.Conv2D(64,5,activation='relu',padding='same')(x1)
-    
-    x = L.Dropout(0.3)(x)
-    
-    x = L.add([x,x1])
-    
-    x = L.Conv2D(128,5,activation='relu')(x)
-    
-    x = L.Conv2D(128,7,activation='relu')(x)
-    
-    x = L.BatchNormalization()(x)
-    
-    x = L.MaxPooling2D()(x)
-    
-    x2 = L.Dropout(0.4)(x)
-    
-    x = L.Conv2D(128,5,activation='relu',padding='same',data_format='channels_last')(x2)
-    
-    x = L.Dropout(0.4)(x)
-    
-    x = L.add([x,x2])
-    
-    x = L.BatchNormalization()(x)
-    
-    x = L.MaxPooling2D()(x)
-    
-    x = L.Dropout(0.4)(x)
-    
-    x = L.Conv2D(256,5,activation='relu')(x)
-    
-    x = L.Conv2D(256,5,activation='relu')(x)
-    
-    x = L.BatchNormalization()(x)
-    
-    x = L.MaxPooling2D()(x)
-    
-    x2 = L.Dropout(0.4)(x)
-    
-    x = L.Conv2D(256,3,activation='relu',padding='same',data_format='channels_last')(x2)
-    
-    x = L.Dropout(0.4)(x)
-    
-    x = L.add([x,x2])
-    
-    x = L.BatchNormalization()(x)
-    
-    x = L.MaxPooling2D()(x)
-    
-    x = L.Dropout(0.43)(x)
-    
-    op1 = L.Flatten()(x)
-    
-    pred1 = L.Dense(1,activation = 'sigmoid',name = 'dense_f1')(op1)
-    
-    
-    model = M.Model(inputs=inp2,outputs=pred1)
-    
-    lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
-                                0.1,
-                                decay_steps=374,
-                                decay_rate=0.96,
-                                staircase=True)
-    
-    model.compile(loss=tf.keras.losses.BinaryCrossentropy(label_smoothing=0.2), optimizer=O.Adam(learning_rate=0.1),metrics=['acc'])
-    
-    return model
-
-def build_model_lstm():
-        
-    inp2 = L.Input(shape=(*DIM,),name='input')
-
-    x = L.Bidirectional(L.LSTM(32))(inp2)
-    
-    pred1 = L.Dense(1,activation = 'sigmoid',name = 'dense_f1')(x)
-    
-    model = M.Model(inputs=inp2,outputs=pred1)
-    
-    lr_schedule = O.schedules.ExponentialDecay(
-                                0.1,
-                                decay_steps=374,
-                                decay_rate=0.96,
-                                staircase=True)
-    
-    model.compile(loss=tf.keras.losses.BinaryCrossentropy(label_smoothing=0.2), optimizer=O.Adam(learning_rate=0.001),metrics=['acc'])
-    
-    return model
 
 class Data_Generator(tf.keras.utils.Sequence):
     
@@ -216,14 +69,14 @@ class Data_Generator(tf.keras.utils.Sequence):
     def getdata(self, music_id_list):
         X = np.zeros((self.batch_size,*self.dim))
         for i, m_id in enumerate(music_id_list):
-            audio = wave.open(f'/content/drive/My Drive/voice_model_train/recordings/{m_id}','r')
+            #audio = wave.open(f'/content/drive/My Drive/voice_model_train/recordings/{m_id}','r')
+            audio = wave.open(f'recordings/{m_id}','r')
             frames = []
             for j in range(self.dim[0]):
                 au = audio.readframes(self.dim[1])
                 au = np.fromstring(au,np.int16)
-                au = np.array(au,np.float32)/255
                 frames.append(au)
-            X[i,] = np.array(frames,dtype=np.float32)
+            X[i,] = np.array(frames,dtype=np.int16)
             audio.close()
         return X
     
@@ -235,7 +88,7 @@ class Data_Generator(tf.keras.utils.Sequence):
         #X = np.reshape(X,(self.batch_size,*self.dim,1))
         if self.train == True:
             y = [self.target.values[k] for k in indices]
-            y = np.array(y).astype(np.float32)
+            y = np.array(y).astype(np.int16)
             return X,y
         return X
     
@@ -266,7 +119,7 @@ model.summary()
 def lrfn(epoch, lr):
     lr_max = 0.1
     lr_min = 0.000001
-    lr_decay = 0.96
+    lr_decay = 0.8
     epoch_sust  = 2
     if epoch % epoch_sust == 0:
         lr = lr_max * lr_decay**((epoch+1)/0.19) 
@@ -295,7 +148,8 @@ history = model.fit(train_gen,
                     epochs=EPOCHS,
                     steps_per_epoch=len(df.label.values)//BATCH_SIZE)
 
-model.save('/content/drive/My Drive/voice_model_train/voice_button_model_lstm.h5')
+#model.save('/content/drive/My Drive/voice_model_train/voice_button_model_lstm.h5')
+model.save('models/5th_version/voice_button_model_lstm.h5')
 
 tf.compat.v1.keras.backend.clear_session()
 
