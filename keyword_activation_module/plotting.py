@@ -18,8 +18,8 @@ for l in range(15):
             for i in range(184):
                 au = a.readframes(256)
                 au = np.fromstring(au,np.int16)
-                au = np.array(au,np.float32)/255
                 b.append(au)
+            b = np.array(b,np.int16)
             axs = fig.add_subplot(spec[j,k])
             axs.set_title(f'{counter}.wav')
             axs.imshow(b,cmap='gray')
