@@ -18,14 +18,16 @@ FRAMES = 47104
 SAMPLE_WIDTH = 2
 DIM = (184,256)
 
+KEY_DIR = '/home/pi/Project_V/keyword_detection_module/'
+DIREC_DIR = '/home/pi/Project_V/direction_detection_module/'
 p = pyaudio.PyAudio()
 
 try:
-    df = pd.read_csv('/home/pi/Project_V/voice_data_testing.csv')
+    df = pd.read_csv(os.path.join(KEY_DIR,'voice_data_testing.csv'))
 except:
     df = pd.DataFrame(columns=["name","label"])
-    df.to_csv('/home/pi/Project_V/voice_data_testing.csv',index=False)
-    df = pd.read_csv('/home/pi/Project_V/voice_data_testing.csv')
+    df.to_csv(os.path.join(KEY_DIR,'voice_data_testing.csv'),index=False)
+    df = pd.read_csv(os.path.join(KEY_DIR,'voice_data_testing.csv'))
    
 
 stream = p.open(format= p.get_format_from_width(SAMPLE_WIDTH),
@@ -36,9 +38,9 @@ stream = p.open(format= p.get_format_from_width(SAMPLE_WIDTH),
                 input_device_index = 0,
                 frames_per_buffer=BUFFER_SIZE)
 
-model = tf.keras.models.load_model('/home/pi/Project_V/keyword_detection_module/models/5th_version/voice_button_model_lstm.h5')
+model = tf.keras.models.load_model(os.path.join(KEY_DIR,'models/5th_version/voice_button_model_lstm.h5'))
 #model.load_weights('models/2nd version/voice_button_model_weights.h5py')
-dir_model = tf.keras.models.load_model('/home/pi/Project_V/direction_detection_module/models/direction_model_lstm_v2.h5')
+dir_model = tf.keras.models.load_model(os.path.join(DIREC_DIR,'models/direction_model_lstm_v2.h5'))
 try:
     i = df.index.stop+1
 except:
@@ -51,11 +53,11 @@ name = []
 
 today = date.today()
 try:
-    os.system(f'mkdir /home/pi/Project_V/test_recordings')
+    os.system(f'mkdir /home/pi/Project_V/keyword_detection_module/test_recordings')
 except:
     pass
 try:
-    os.system(f'mkdir /home/pi/Project_V/test_recordings/{today}')
+    os.system(f'mkdir /home/pi/Project_V/keyword_detection_module/test_recordings/{today}')
 except:
     pass
 
@@ -87,7 +89,7 @@ while True:
         pred = model.predict(np.array([frames0,frames1,frames2,frames3],dtype=np.int16))
         print(pred)
         
-        if pred[0] > 0.88 or pred[1]>0.88 or pred[2]>0.88 or pred[3]>0.88:
+        if pred[0] > 0.9 or pred[1]>0.9 or pred[2]>0.9 or pred[3]>0.9:
             print("Hello")
             frames0_dir = np.reshape(frames0,(184,256,1))
             frames1_dir = np.reshape(frames1,(184,256,1))
@@ -102,12 +104,12 @@ while True:
             print(pred_dir)
             print('direction: ',np.argmax(pred_dir,axis=1))
             
-            torf = int(input('Was it correct?(1: yes and 0: no)'))
+            torf = int(input('Was it correct (yes : 1 and no : 0)? '))
             lb = 1
             if torf == 0:
                 lb = 0
                 
-            wf = wave.open(f'/home/pi/Project_V/test_recordings/{today}/{i}.wav','wb')
+            wf = wave.open(os.path.join(KEY_DIR,f'test_recordings/{today}/{i}.wav'),'wb')
             wf.setnchannels(1)
             wf.setsampwidth(p.get_sample_size(p.get_format_from_width(SAMPLE_WIDTH)))
             wf.setframerate(SAMPLE_RATE)
@@ -118,7 +120,7 @@ while True:
             name.append(f'{i}.wav')        
             i += 1
     
-            wf = wave.open(f'/home/pi/Project_V/test_recordings/{today}/{i}.wav','wb')
+            wf = wave.open(os.path.join(KEY_DIR,f'test_recordings/{today}/{i}.wav'),'wb')
             wf.setnchannels(1)
             wf.setsampwidth(p.get_sample_size(p.get_format_from_width(SAMPLE_WIDTH)))
             wf.setframerate(SAMPLE_RATE)
@@ -129,7 +131,7 @@ while True:
             name.append(f'{i}.wav')        
             i += 1
     
-            wf = wave.open(f'/home/pi/Project_V/test_recordings/{today}/{i}.wav','wb')
+            wf = wave.open(os.path.join(KEY_DIR,f'test_recordings/{today}/{i}.wav'),'wb')
             wf.setnchannels(1)
             wf.setsampwidth(p.get_sample_size(p.get_format_from_width(SAMPLE_WIDTH)))
             wf.setframerate(SAMPLE_RATE)
@@ -140,7 +142,7 @@ while True:
             name.append(f'{i}.wav')        
             i += 1
     
-            wf = wave.open(f'/home/pi/Project_V/test_recordings/{today}/{i}.wav','wb')
+            wf = wave.open(os.path.join(KEY_DIR,f'test_recordings/{today}/{i}.wav'),'wb')
             wf.setnchannels(1)
             wf.setsampwidth(p.get_sample_size(p.get_format_from_width(SAMPLE_WIDTH)))
             wf.setframerate(SAMPLE_RATE)
@@ -153,14 +155,10 @@ while True:
             
             df1 = {"name":name,"label":label}
             df1 = pd.DataFrame(df1)
-            df1.to_csv('/home/pi/Project_V/voice_data_testing.csv',mode='a',index=False,header=False)
+            df1.to_csv(os.path.join(KEY_DIR,'voice_data_testing.csv'),mode='a',index=False,header=False)
             model.fit(np.array([frames0,frames1,frames2,frames3],dtype=np.float32),[lb,lb,lb,lb],batch_size=1,epochs=1)
-            model.save('/home/pi/Project_V/models/4th_version/voice_button_model_lstm.h5')
-            model = tf.keras.models.load_model('/home/pi/Project_V/models/4th_version/voice_button_model_lstm.h5')
-            if lb == 1:
-                model.fit(np.array([frames0,frames1,frames2,frames3],dtype=np.float32),[lb,lb,lb,lb],batch_size=1,epochs=1)
-                model.save('/home/pi/Project_V/models/4th_version/voice_button_model_lstm.h5')
-                break
+            model.save(os.path.join(KEY_DIR,'models/test_version/voice_button_model_lstm.h5'))
+            model = tf.keras.models.load_model(os.path.join(KEY_DIR,'models/test_version/voice_button_model_lstm.h5'))
 	
     except KeyboardInterrupt:
         stream.stop_stream()
