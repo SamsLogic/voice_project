@@ -24,6 +24,7 @@ p = pyaudio.PyAudio()
 
 try:
     df = pd.read_csv(os.path.join(KEY_DIR,'voice_data_testing.csv'))
+    dir_df = pd.read_csv(os.path.join(KEY_DIR,'voice_data_dir_testing.csv'))
 except:
     df = pd.DataFrame(columns=["name","label"])
     df.to_csv(os.path.join(KEY_DIR,'voice_data_testing.csv'),index=False)
@@ -78,6 +79,7 @@ while True:
             frames1.append(b)
             frames2.append(c)
             frames3.append(d)
+            stream.write(data)
         frames0 = np.array(frames0,dtype=np.int16)
         frames1 = np.array(frames1,dtype=np.int16)
         frames2 = np.array(frames2,dtype=np.int16)
