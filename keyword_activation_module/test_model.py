@@ -55,7 +55,6 @@ class Data_Generator(tf.keras.utils.Sequence):
                 if audio.getnframes != self.dim[0]*self.dim[1]:
                     for k in range(audio.getnframes()//BUFFER_SIZE,self.dim[0]):
                         frames[k] = np.zeros(256,dtype=np.int16)
-                frames = np.array(frames,dtype=np.float32)
             except:
                 continue
             X[i,] = frames

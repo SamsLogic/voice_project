@@ -36,7 +36,7 @@ stream = p.open(format= p.get_format_from_width(SAMPLE_WIDTH),
                 input_device_index = 0,
                 frames_per_buffer=BUFFER_SIZE)
 
-model = tf.keras.models.load_model('models/4th_version/voice_button_model_lstm.h5')
+model = tf.keras.models.load_model('models/5th_version/voice_button_model_lstm.h5')
 #model.load_weights('models/2nd version/voice_button_model_weights.h5py')
 
 try:
