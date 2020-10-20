@@ -18,6 +18,8 @@ FRAMES = 47104
 SAMPLE_WIDTH = 2
 DIM = (184,256)
 
+HOME_DIR = 'home/pi/Project_V/keyword_detection_module/'
+
 p = pyaudio.PyAudio()
 
 try:
