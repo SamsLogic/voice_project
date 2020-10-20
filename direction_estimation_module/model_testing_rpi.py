@@ -36,9 +36,9 @@ stream = p.open(format= p.get_format_from_width(SAMPLE_WIDTH),
                 input_device_index = 0,
                 frames_per_buffer=BUFFER_SIZE)
 
-model = tf.keras.models.load_model('/home/pi/Project_V/models/4th_version/voice_button_model_lstm.h5')
+model = tf.keras.models.load_model('/home/pi/Project_V/keyword_detection_module/models/5th_version/voice_button_model_lstm.h5')
 #model.load_weights('models/2nd version/voice_button_model_weights.h5py')
-dir_model = tf.keras.models.load_model('/home/pi/Project_V/direction_detection_module/models/direction_model_lstm.h5')
+dir_model = tf.keras.models.load_model('/home/pi/Project_V/direction_detection_module/models/direction_model_lstm_v2.h5')
 try:
     i = df.index.stop+1
 except:
