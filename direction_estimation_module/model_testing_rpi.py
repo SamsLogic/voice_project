@@ -116,6 +116,7 @@ while True:
             frames3_dir = np.reshape(frames3,(184,256,1))
             dir_frame = [frames0_dir,frames1_dir,frames2_dir,frames3_dir]
             dir_frame = np.array(dir_frame,dtype=np.int16)
+            dir_frame = np.transpose(dir_frame, (1,0,2,3))
             dir_frame = np.reshape(dir_frame,(1,*dir_frame.shape))
             print(dir_frame.shape)
             
