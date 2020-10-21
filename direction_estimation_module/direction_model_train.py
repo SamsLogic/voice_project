@@ -103,6 +103,7 @@ class Data_Generator(tf.keras.utils.Sequence):
         
         music_id_list = [self.music_ids.values[k] for k in indices]
         X = self.getdata(music_id_list)
+        X = np.transpose(X,(0,2,1,3,4))
         #X = np.reshape(X,(self.batch_size,*self.dim,1))
         if self.train == True:
             y = [self.target.values[k] for k in indices[::4]]
@@ -116,11 +117,23 @@ class Data_Generator(tf.keras.utils.Sequence):
 
 def build_model_lstm():
         
-    inp = L.Input(shape=(4,*DIM,),name='input')
+    inp = L.Input(shape=(DIM[0],4,DIM[1],DIM[2],),name='input')
 
     x = L.BatchNormalization()(inp)
     
     x = L.Bidirectional(L.ConvLSTM2D(32,3))(x)
+    
+    x = L.MaxPooling2D()(x)
+    
+    x = L.Dropout(0.2)(x)
+    
+    x = L.Conv2D(32,3,activation='relu')(x)
+    
+    x = L.MaxPooling2D()(x)
+    
+    x = L.Dropout(0.2)(x)
+
+    x = L.Conv2D(32,3,activation='relu')(x)
     
     x = L.MaxPooling2D()(x)
     
@@ -136,8 +149,34 @@ def build_model_lstm():
     
     return model
 
+def build_model_lstm():
+    inp = L.Input(shape=(DIM[0],4,DIM[1],DIM[2],),name='input')
+    x = L.BatchNormalization()(inp)
+    x = L.Bidirectional(L.ConvLSTM2D(16,3))(x)
+    x = L.MaxPooling2D()(x)
+    x = L.Dropout(0.2)(x)
+    # x = L.Conv2D(32,3,activation='relu')(x)
+    # x = L.MaxPooling2D()(x)
+    # x = L.Dropout(0.2)(x)
+    # x = L.Conv2D(32,3,activation='relu')(x)
+    # x = L.MaxPooling2D()(x)
+    # x = L.Dropout(0.2)(x)
+    # x = L.Conv2D(32,3,activation='relu')(x)
+    # x = L.MaxPooling2D()(x)
+    # x = L.Dropout(0.2)(x)
+
+    # x = L.Conv2D(32,3,activation='relu')(x)
+    # x = L.MaxPooling2D()(x)
+    # x = L.Dropout(0.2)(x)
+    x = L.Flatten()(x)
+    pred1 = L.Dense(8,activation = 'softmax',name = 'dense_f1')(x)
+    model = M.Model(inputs=inp,outputs=pred1)
+    model.compile(loss='categorical_crossentropy', optimizer=O.Adam(learning_rate=0.001),metrics=['acc'])
+    return model
+
 model = build_model_lstm()
 model.summary()
+
 
 def lrfn(epoch, lr):
     lr_max = 0.01
