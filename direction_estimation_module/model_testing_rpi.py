@@ -23,12 +23,17 @@ DIREC_DIR = '/home/pi/Project_V/direction_detection_module/'
 p = pyaudio.PyAudio()
 
 try:
-    df = pd.read_csv(os.path.join(KEY_DIR,'voice_data_testing.csv'))
-    dir_df = pd.read_csv(os.path.join(KEY_DIR,'voice_data_dir_testing.csv'))
+    df = pd.read_csv(os.path.join(DIREC_DIR,'voice_data_dir_testing.csv'))
+    key_df = pd.read_csv(os.path.join(KEY_DIR,'voice_data_testing.csv'))
 except:
-    df = pd.DataFrame(columns=["name","label"])
-    df.to_csv(os.path.join(KEY_DIR,'voice_data_testing.csv'),index=False)
-    df = pd.read_csv(os.path.join(KEY_DIR,'voice_data_testing.csv'))
+    df = pd.DataFrame(columns=["name","label","direction_0","direction_1","direction_2","direction_3","direction_4","direction_5","direction_6","direction_7"])
+    df.to_csv(os.path.join(DIREC_DIR,'voice_data_dir_testing.csv'),index=False)
+    df = pd.read_csv(os.path.join(DIREC_DIR,'voice_data_dir_testing.csv'))
+    key_df = pd.DataFrame(columns=["name","label"])
+    key_df.to_csv(os.path.join(KEY_DIR,'voice_data_testing.csv'),index=False)
+    key_df = pd.read_csv(os.path.join(KEY_DIR,'voice_data_testing.csv')) 
+    
+    
    
 
 stream = p.open(format= p.get_format_from_width(SAMPLE_WIDTH),
@@ -49,21 +54,33 @@ except:
 
 print('Speak')
 
-label = []
-name = []
 
 today = date.today()
 try:
+    os.system(f'mkdir /home/pi/Project_V/direction_detection_module/test_recordings')
     os.system(f'mkdir /home/pi/Project_V/keyword_detection_module/test_recordings')
 except:
     pass
 try:
+    os.system(f'mkdir /home/pi/Project_V/direction_detection_module/test_recordings/{today}')
     os.system(f'mkdir /home/pi/Project_V/keyword_detection_module/test_recordings/{today}')
 except:
     pass
 
+def write_wave_file(dir,sample_width,sample_rate,data,num):
+    loc = os.path.join(dir,f'test_recordings/{today}/{num}.wav')
+    wf = wave.open(loc,'wb')
+    wf.setnchannels(1)
+    wf.setsampwidth(p.get_sample_size(p.get_format_from_width(sample_width)))
+    wf.setframerate(sample_rate)
+    wf.writeframes(b''.join(data))
+    wf.close()
+
 while True:
     try:
+        label = []
+        name = []
+
         stream.start_stream()
         frames0 = []
         frames1 = []
@@ -107,50 +124,35 @@ while True:
             print('direction: ',np.argmax(pred_dir,axis=1))
             
             torf = int(input('Was it correct (yes : 1 and no : 0)? '))
+            
             lb = 1
             if torf == 0:
                 lb = 0
-                
-            wf = wave.open(os.path.join(KEY_DIR,f'test_recordings/{today}/{i}.wav'),'wb')
-            wf.setnchannels(1)
-            wf.setsampwidth(p.get_sample_size(p.get_format_from_width(SAMPLE_WIDTH)))
-            wf.setframerate(SAMPLE_RATE)
-            wf.writeframes(b''.join(frames0))
-            wf.close()
-    
+            
+            write_wave_file(KEY_DIR,SAMPLE_WIDTH,SAMPLE_RATE,frames0,i)
+            if lb == 1:
+                write_wave_file(DIREC_DIR,SAMPLE_WIDTH,SAMPLE_RATE,frames0,i)
             label.append(lb)
             name.append(f'{i}.wav')        
             i += 1
     
-            wf = wave.open(os.path.join(KEY_DIR,f'test_recordings/{today}/{i}.wav'),'wb')
-            wf.setnchannels(1)
-            wf.setsampwidth(p.get_sample_size(p.get_format_from_width(SAMPLE_WIDTH)))
-            wf.setframerate(SAMPLE_RATE)
-            wf.writeframes(b''.join(frames1))
-            wf.close()
-    
+            write_wave_file(KEY_DIR,SAMPLE_WIDTH,SAMPLE_RATE,frames1,i)
+            if lb == 1:
+                write_wave_file(DIREC_DIR,SAMPLE_WIDTH,SAMPLE_RATE,frames1,i)
+            label.append(lb)
+            name.append(f'{i}.wav')        
+            i += 1
+            
+            write_wave_file(KEY_DIR,SAMPLE_WIDTH,SAMPLE_RATE,frames2,i)
+            if lb == 1:
+                write_wave_file(DIREC_DIR,SAMPLE_WIDTH,SAMPLE_RATE,frames2,i)
             label.append(lb)
             name.append(f'{i}.wav')        
             i += 1
     
-            wf = wave.open(os.path.join(KEY_DIR,f'test_recordings/{today}/{i}.wav'),'wb')
-            wf.setnchannels(1)
-            wf.setsampwidth(p.get_sample_size(p.get_format_from_width(SAMPLE_WIDTH)))
-            wf.setframerate(SAMPLE_RATE)
-            wf.writeframes(b''.join(frames2))
-            wf.close()
-    
-            label.append(lb)
-            name.append(f'{i}.wav')        
-            i += 1
-    
-            wf = wave.open(os.path.join(KEY_DIR,f'test_recordings/{today}/{i}.wav'),'wb')
-            wf.setnchannels(1)
-            wf.setsampwidth(p.get_sample_size(p.get_format_from_width(SAMPLE_WIDTH)))
-            wf.setframerate(SAMPLE_RATE)
-            wf.writeframes(b''.join(frames3))
-            wf.close()
-    
+            write_wave_file(KEY_DIR,SAMPLE_WIDTH,SAMPLE_RATE,frames3,i)
+            if lb == 1:
+                write_wave_file(DIREC_DIR,SAMPLE_WIDTH,SAMPLE_RATE,frames3,i)
             label.append(lb)
             name.append(f'{i}.wav')        
             i += 1
@@ -158,10 +160,24 @@ while True:
             df1 = {"name":name,"label":label}
             df1 = pd.DataFrame(df1)
             df1.to_csv(os.path.join(KEY_DIR,'voice_data_testing.csv'),mode='a',index=False,header=False)
-            model.fit(np.array([frames0,frames1,frames2,frames3],dtype=np.float32),[lb,lb,lb,lb],batch_size=1,epochs=1)
-            model.save(os.path.join(KEY_DIR,'models/test_version/voice_button_model_lstm.h5'))
-            model = tf.keras.models.load_model(os.path.join(KEY_DIR,'models/test_version/voice_button_model_lstm.h5'))
-	
+            
+            #model.fit(np.array([frames0,frames1,frames2,frames3],dtype=np.float32),[lb,lb,lb,lb],batch_size=1,epochs=1)
+            #model.save(os.path.join(KEY_DIR,'models/test_version/voice_button_model_lstm.h5'))
+            #model = tf.keras.models.load_model(os.path.join(KEY_DIR,'models/test_version/voice_button_model_lstm.h5'))
+            if lb == 1:
+                direction_list = []
+                direction = np.zeros((8),dtype=np.int16)
+                direc = int(input('direction of voice: '))
+                direction[direc] = 1
+                direction_list.append(direction)
+                direction_list.append(direction)
+                direction_list.append(direction)
+                direction_list.append(direction)
+                direction_list = np.array(direction_list,dtype=np.int16)
+                df1 = {"name":name,"label":label,"direction_0":direction_list[:,0],"direction_1":direction_list[:,1],"direction_2":direction_list[:,2],"direction_3":direction_list[:,3],"direction_4":direction_list[:,4],"direction_5":direction_list[:,5],"direction_6":direction_list[:,6],"direction_7":direction_list[:,7]}
+                df1 = pd.DataFrame(df1)
+                df1.to_csv(os.path.join(DIREC_DIR,'voice_data_dir_testing.csv'),mode='a',index=False,header=False)
+            
     except KeyboardInterrupt:
         stream.stop_stream()
         stream.close()
