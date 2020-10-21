@@ -46,7 +46,7 @@ stream = p.open(format= p.get_format_from_width(SAMPLE_WIDTH),
 
 model = tf.keras.models.load_model(os.path.join(KEY_DIR,'models/5th_version/voice_button_model_lstm.h5'))
 #model.load_weights('models/2nd version/voice_button_model_weights.h5py')
-dir_model = tf.keras.models.load_model(os.path.join(DIREC_DIR,'models/direction_model_lstm_v2.h5'))
+dir_model = tf.keras.models.load_model(os.path.join(DIREC_DIR,'models/direction_model_lstm_v3.h5'))
 try:
     i = df.index.stop+1
 except:
