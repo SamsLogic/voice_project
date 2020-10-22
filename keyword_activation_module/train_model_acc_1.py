@@ -28,7 +28,7 @@ import wave
 audio = wave.open('recordings/100.wav')
 audio.getnframes()
 
-BATCH_SIZE = 16
+BATCH_SIZE = 32
 SAMPLE_RATE = 16000
 CHANNELS = 1
 EPOCHS = 15
@@ -101,7 +101,7 @@ def build_model_lstm():
 
     x = L.BatchNormalization()(inp)
     
-    x = L.Bidirectional(L.GRU(32,return_sequences=True))(x)
+    x = L.Bidirectional(L.GRU(2,return_sequences=True))(x)
     
     x = L.GlobalAveragePooling1D()(x)
     
@@ -119,7 +119,7 @@ model.summary()
 def lrfn(epoch, lr):
     lr_max = 0.1
     lr_min = 0.000001
-    lr_decay = 0.8
+    lr_decay = 0.85
     epoch_sust  = 2
     if epoch % epoch_sust == 0:
         lr = lr_max * lr_decay**((epoch+1)/0.19) 
@@ -149,7 +149,7 @@ history = model.fit(train_gen,
                     steps_per_epoch=len(df.label.values)//BATCH_SIZE)
 
 #model.save('/content/drive/My Drive/voice_model_train/voice_button_model_lstm.h5')
-model.save('models/5th_version/voice_button_model_lstm.h5')
+model.save('models/6th_version/voice_button_model_lstm.h5')
 
 tf.compat.v1.keras.backend.clear_session()
 
