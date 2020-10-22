@@ -49,8 +49,10 @@ model = tf.keras.models.load_model(os.path.join(KEY_DIR,'models/5th_version/voic
 dir_model = tf.keras.models.load_model(os.path.join(DIREC_DIR,'models/direction_model_lstm_v3.h5'))
 try:
     i = df.index.stop+1
+    m = key_df.index.stop+1
 except:
     i=1
+    m=1
 
 print('Speak')
 
@@ -80,7 +82,8 @@ while True:
     try:
         label = []
         name = []
-
+        key_label = []
+        key_name = []
         stream.start_stream()
         frames0 = []
         frames1 = []
@@ -130,35 +133,47 @@ while True:
             if torf == 0:
                 lb = 0
             
-            write_wave_file(KEY_DIR,SAMPLE_WIDTH,SAMPLE_RATE,frames0,i)
+            write_wave_file(KEY_DIR,SAMPLE_WIDTH,SAMPLE_RATE,frames0,m)
             if lb == 1:
                 write_wave_file(DIREC_DIR,SAMPLE_WIDTH,SAMPLE_RATE,frames0,i)
-            label.append(lb)
-            name.append(f'{i}.wav')        
-            i += 1
+                i += 1
+                name.append(f'{i}.wav')
+                label.append(lb)
+            key_label.append(lb)
+            key_name.append(f'{m}.wav')        
+            m += 1
     
-            write_wave_file(KEY_DIR,SAMPLE_WIDTH,SAMPLE_RATE,frames1,i)
+            write_wave_file(KEY_DIR,SAMPLE_WIDTH,SAMPLE_RATE,frames1,m)
             if lb == 1:
                 write_wave_file(DIREC_DIR,SAMPLE_WIDTH,SAMPLE_RATE,frames1,i)
-            label.append(lb)
-            name.append(f'{i}.wav')        
-            i += 1
+                i += 1
+                name.append(f'{i}.wav')
+                label.append(lb)                
+            key_label.append(lb)
+            key_name.append(f'{m}.wav')        
+            m += 1
             
-            write_wave_file(KEY_DIR,SAMPLE_WIDTH,SAMPLE_RATE,frames2,i)
+            write_wave_file(KEY_DIR,SAMPLE_WIDTH,SAMPLE_RATE,frames2,m)
             if lb == 1:
                 write_wave_file(DIREC_DIR,SAMPLE_WIDTH,SAMPLE_RATE,frames2,i)
-            label.append(lb)
-            name.append(f'{i}.wav')        
-            i += 1
+                i += 1
+                name.append(f'{i}.wav')
+                label.append(lb)                
+            key_label.append(lb)
+            key_name.append(f'{m}.wav')        
+            m += 1
     
-            write_wave_file(KEY_DIR,SAMPLE_WIDTH,SAMPLE_RATE,frames3,i)
+            write_wave_file(KEY_DIR,SAMPLE_WIDTH,SAMPLE_RATE,frames3,m)
             if lb == 1:
                 write_wave_file(DIREC_DIR,SAMPLE_WIDTH,SAMPLE_RATE,frames3,i)
-            label.append(lb)
-            name.append(f'{i}.wav')        
-            i += 1
+                i += 1
+                name.append(f'{i}.wav')                
+                label.append(lb)
+            key_label.append(lb)
+            key_name.append(f'{m}.wav')        
+            m += 1
             
-            df1 = {"name":name,"label":label}
+            df1 = {"name":key_name,"label":key_label}
             df1 = pd.DataFrame(df1)
             df1.to_csv(os.path.join(KEY_DIR,'voice_data_testing.csv'),mode='a',index=False,header=False)
             
