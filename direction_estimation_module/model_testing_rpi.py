@@ -3,12 +3,14 @@ import tensorflow as tf
 import tensorflow.keras.layers as L
 import tensorflow.keras.models as M
 
+import RPi.GPIO as GPIO
+import time
+
 from datetime import date
 import numpy as np
 import pyaudio 
 import wave
 import os
-
 
 SAMPLE_RATE = 16000
 CHANNELS = 4
@@ -21,6 +23,16 @@ DIM = (184,256)
 KEY_DIR = '/home/pi/Project_V/keyword_detection_module/'
 DIREC_DIR = '/home/pi/Project_V/direction_detection_module/'
 p = pyaudio.PyAudio()
+
+GPIO.setmode(GPIO.BCM)
+
+GPIO.setup(27,GPIO.OUT)
+GPIO.setup(17,GPIO.OUT)
+
+servo2 = GPIO.PWM(17,50)
+servo1 = GPIO.PWM(27,50)
+servo2.start(0)
+servo1.start(0)
 
 try:
     df = pd.read_csv(os.path.join(DIREC_DIR,'voice_data_dir_testing.csv'))
@@ -184,6 +196,16 @@ while True:
                 direction_list = []
                 direction = np.zeros((8),dtype=np.int16)
                 direc = int(input('direction of voice: '))
+                servo1_angle_1 = 45*((1==direc)+(3==direc)+(4 ==direc)+(6==direc))
+                servo1_angle_2 = 135*((2==direc)+(5==direc)+(7 ==direc)+(0==direc))
+                servo2_angle_1 = 20*(((0==direc)+(1==direc)))
+                servo2_angle_2 = 50*(((2==direc)+(3==direc)))
+                servo2_angle_3 = 80*(((4==direc)+(5==direc)))
+                servo2_angle_4 = 120*(((6==direc)+(7==direc)))
+                servo1.ChangeDutyCycle(2+((servo1_angle_1+servo1_angle_2)/18))
+                servo2.ChangeDutyCycle(2+(servo2_angle_1+servo2_angle_2+servo2_angle_3+servo2_angle_4)/18)
+                time.sleep(0.5)
+                servo1.ChangeDutyCycle(0)
                 direction[direc] = 1
                 direction_list.append(direction)
                 direction_list.append(direction)
