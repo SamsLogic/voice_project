@@ -92,6 +92,7 @@ def write_wave_file(dir,sample_width,sample_rate,data,num):
 
 while True:
     try:
+        servo1.ChangeDutyCycle(0)
         label = []
         name = []
         key_label = []
@@ -195,13 +196,14 @@ while True:
             if lb == 1:
                 direction_list = []
                 direction = np.zeros((8),dtype=np.int16)
-                direc = int(input('direction of voice: '))
+                direc = np.argmax(pred_dir,axis=1)
+                #direc = int(input('direction of voice: '))
                 servo1_angle_1 = 45*((1==direc)+(3==direc)+(4 ==direc)+(6==direc))
                 servo1_angle_2 = 135*((2==direc)+(5==direc)+(7 ==direc)+(0==direc))
-                servo2_angle_1 = 20*(((0==direc)+(1==direc)))
-                servo2_angle_2 = 50*(((2==direc)+(3==direc)))
-                servo2_angle_3 = 80*(((4==direc)+(5==direc)))
-                servo2_angle_4 = 120*(((6==direc)+(7==direc)))
+                servo2_angle_1 = 135*(((0==direc)+(1==direc)))
+                servo2_angle_2 = 180*(((2==direc)+(3==direc)))
+                servo2_angle_3 = 0*(((4==direc)+(5==direc)))
+                servo2_angle_4 = 45*(((6==direc)+(7==direc)))
                 servo1.ChangeDutyCycle(2+((servo1_angle_1+servo1_angle_2)/18))
                 servo2.ChangeDutyCycle(2+(servo2_angle_1+servo2_angle_2+servo2_angle_3+servo2_angle_4)/18)
                 time.sleep(0.5)
