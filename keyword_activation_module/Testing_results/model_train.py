@@ -25,13 +25,13 @@ import matplotlib.pyplot as plt
 import wave
 
 #audio = wave.open('/content/drive/My Drive/voice_model_train/recordings/100.wav')
-audio = wave.open('test_recordings/2.wav')
+audio = wave.open('2020-11-09/2.wav')
 audio.getnframes()
 
 BATCH_SIZE = 8
 SAMPLE_RATE = 16000
 CHANNELS = 1
-EPOCHS = 30
+EPOCHS = 15
 RECORD_SECONDS = 3
 BUFFER_SIZE = 256
 FRAMES = audio.getnframes()
@@ -40,7 +40,7 @@ DIM = (int(FRAMES//BUFFER_SIZE),BUFFER_SIZE)
 minmax = MinMaxScaler([0,1])
 
 #df = pd.read_csv('/content/drive/My Drive/voice_model_train/voice_data.csv')
-df = pd.read_csv('voice_data_testing.csv')
+df = pd.read_csv('voice_data_testing_2020-11-09.csv')
 
 df.label.value_counts()
 
@@ -70,7 +70,7 @@ class Data_Generator(tf.keras.utils.Sequence):
         X = np.zeros((self.batch_size,*self.dim))
         for i, m_id in enumerate(music_id_list):
             #audio = wave.open(f'/content/drive/My Drive/voice_model_train/recordings/{m_id}','r')
-            audio = wave.open(f'test_recordings/{m_id}','r')
+            audio = wave.open(f'2020-11-09/{m_id}','r')
             frames = []
             for j in range(self.dim[0]):
                 au = audio.readframes(self.dim[1])
@@ -95,7 +95,7 @@ class Data_Generator(tf.keras.utils.Sequence):
     def __len__(self):
         return int(np.floor(len(self.indices)/self.batch_size))
 
-model = M.load_model('../models/6th_version/voice_button_model_lstm_new.h5')
+model = M.load_model('../models/6th_version/voice_button_model_lstm_update.h5')
 
 def lrfn(epoch, lr):
     lr_max = 0.1
@@ -130,7 +130,7 @@ history = model.fit(train_gen,
                     steps_per_epoch=len(df.label.values)//BATCH_SIZE)
 
 #model.save('/content/drive/My Drive/voice_model_train/voice_button_model_lstm.h5')
-model.save('../models/6th_version/voice_button_model_lstm_update.h5')
+model.save('../models/6th_version/voice_button_model_lstm_update_2020-11-09.h5')
 
 tf.compat.v1.keras.backend.clear_session()
 
