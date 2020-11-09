@@ -92,7 +92,7 @@ def write_wave_file(dir,sample_width,sample_rate,data,num):
 
 while True:
     try:
-        servo1.ChangeDutyCycle(0)
+        #servo1.ChangeDutyCycle(0)
         label = []
         name = []
         key_label = []
@@ -194,6 +194,7 @@ while True:
             #model.save(os.path.join(KEY_DIR,'models/test_version/voice_button_model_lstm.h5'))
             #model = tf.keras.models.load_model(os.path.join(KEY_DIR,'models/test_version/voice_button_model_lstm.h5'))
             if lb == 1:
+
                 direction_list = []
                 direction = np.zeros((8),dtype=np.int16)
                 direc = np.argmax(pred_dir,axis=1)
@@ -217,14 +218,17 @@ while True:
                 df1 = {"name":name,"label":label,"direction_0":direction_list[:,0],"direction_1":direction_list[:,1],"direction_2":direction_list[:,2],"direction_3":direction_list[:,3],"direction_4":direction_list[:,4],"direction_5":direction_list[:,5],"direction_6":direction_list[:,6],"direction_7":direction_list[:,7]}
                 df1 = pd.DataFrame(df1)
                 df1.to_csv(os.path.join(DIREC_DIR,'voice_data_dir_testing.csv'),mode='a',index=False,header=False)
-            
     except KeyboardInterrupt:
         stream.stop_stream()
         stream.close()
         p.terminate()
+        servo1.stop()
+        servo2.stop()
 try:
     stream.stop_stream()
     stream.close()
+    servo1.stop()
+    servo2.stop()
     p.terminate()		
 except:
     pass
