@@ -56,7 +56,7 @@ stream = p.open(format= p.get_format_from_width(SAMPLE_WIDTH),
                 input_device_index = 0,
                 frames_per_buffer=BUFFER_SIZE)
 
-model = tf.keras.models.load_model(os.path.join(KEY_DIR,'models/5th_version/voice_button_model_lstm.h5'))
+model = tf.keras.models.load_model(os.path.join(KEY_DIR,'models/6th_version/voice_detection_model_lstm_update_2020-11-09.h5'))
 #model.load_weights('models/2nd version/voice_button_model_weights.h5py')
 dir_model = tf.keras.models.load_model(os.path.join(DIREC_DIR,'models/direction_model_lstm_v3.h5'))
 try:
@@ -92,7 +92,7 @@ def write_wave_file(dir,sample_width,sample_rate,data,num):
 
 while True:
     try:
-        #servo1.ChangeDutyCycle(0)
+        servo1.ChangeDutyCycle(0)
         label = []
         name = []
         key_label = []
@@ -207,7 +207,7 @@ while True:
                 servo2_angle_4 = 45*(((6==direc)+(7==direc)))
                 servo1.ChangeDutyCycle(2+((servo1_angle_1+servo1_angle_2)/18))
                 servo2.ChangeDutyCycle(2+(servo2_angle_1+servo2_angle_2+servo2_angle_3+servo2_angle_4)/18)
-                time.sleep(0.5)
+                time.sleep(0.2)
                 servo1.ChangeDutyCycle(0)
                 direction[direc] = 1
                 direction_list.append(direction)
