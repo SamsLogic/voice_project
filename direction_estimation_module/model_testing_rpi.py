@@ -61,9 +61,11 @@ model = tf.keras.models.load_model(os.path.join(KEY_DIR,'models/6th_version/voic
 dir_model = tf.keras.models.load_model(os.path.join(DIREC_DIR,'models/direction_model_lstm_v3.h5'))
 try:
     i = df.index.stop+1
-    m = key_df.index.stop+1
 except:
     i=1
+try:
+    m = key_df.index.stop+1
+except:
     m=1
 
 print('Speak')
