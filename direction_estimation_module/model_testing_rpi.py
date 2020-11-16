@@ -56,7 +56,7 @@ stream = p.open(format= p.get_format_from_width(SAMPLE_WIDTH),
                 input_device_index = 0,
                 frames_per_buffer=BUFFER_SIZE)
 
-model = tf.keras.models.load_model(os.path.join(KEY_DIR,'models/6th_version/voice_detection_model_lstm_update_2020-11-09.h5'))
+model = tf.keras.models.load_model(os.path.join(KEY_DIR,'models/6th_version/voice_detection_model_lstm_update_2020-11-16.h5'))
 #model.load_weights('models/2nd version/voice_button_model_weights.h5py')
 dir_model = tf.keras.models.load_model(os.path.join(DIREC_DIR,'models/direction_model_lstm_v3.h5'))
 try:
@@ -198,7 +198,7 @@ while True:
                 direction_list = []
                 direction = np.zeros((8),dtype=np.int16)
                 direc = np.argmax(pred_dir,axis=1)
-                #direc = int(input('direction of voice: '))
+                direc = int(input('direction of voice: '))
                 servo1_angle_1 = 45*((1==direc)+(3==direc)+(4 ==direc)+(6==direc))
                 servo1_angle_2 = 135*((2==direc)+(5==direc)+(7 ==direc)+(0==direc))
                 servo2_angle_1 = 135*(((0==direc)+(1==direc)))
