@@ -94,7 +94,7 @@ def write_wave_file(dir,sample_width,sample_rate,data,num):
 
 while True:
     try:
-        servo1.ChangeDutyCycle(0)
+        #servo1.ChangeDutyCycle(0)
         label = []
         name = []
         key_label = []
@@ -142,8 +142,8 @@ while True:
             print(pred_dir)
             print('direction: ',np.argmax(pred_dir,axis=1))
             
-            torf = int(input('Was it correct (yes : 1 and no : 0)? '))
-            
+            #torf = int(input('Was it correct (yes : 1 and no : 0)? '))
+            torf = 0
             lb = 1
             if torf == 0:
                 lb = 0
@@ -200,17 +200,18 @@ while True:
                 direction_list = []
                 direction = np.zeros((8),dtype=np.int16)
                 direc = np.argmax(pred_dir,axis=1)
-                direc = int(input('direction of voice: '))
+                #direc = int(input('direction of voice: '))
                 servo1_angle_1 = 45*((1==direc)+(3==direc)+(4 ==direc)+(6==direc))
                 servo1_angle_2 = 135*((2==direc)+(5==direc)+(7 ==direc)+(0==direc))
                 servo2_angle_1 = 135*(((0==direc)+(1==direc)))
                 servo2_angle_2 = 180*(((2==direc)+(3==direc)))
                 servo2_angle_3 = 0*(((4==direc)+(5==direc)))
                 servo2_angle_4 = 45*(((6==direc)+(7==direc)))
-                servo1.ChangeDutyCycle(2+((servo1_angle_1+servo1_angle_2)/18))
-                servo2.ChangeDutyCycle(2+(servo2_angle_1+servo2_angle_2+servo2_angle_3+servo2_angle_4)/18)
-                time.sleep(0.2)
-                servo1.ChangeDutyCycle(0)
+                #servo1.ChangeDutyCycle(2+((servo1_angle_1+servo1_angle_2)/18))
+                #servo2.ChangeDutyCycle(2+(servo2_angle_1+servo2_angle_2+servo2_angle_3+servo2_angle_4)/18)
+                #time.sleep(0.2)
+                #servo1.ChangeDutyCycle(0)
+                #servo2.ChangeDutyCycle(0)
                 direction[direc] = 1
                 direction_list.append(direction)
                 direction_list.append(direction)
