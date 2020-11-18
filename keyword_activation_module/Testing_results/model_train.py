@@ -95,7 +95,25 @@ class Data_Generator(tf.keras.utils.Sequence):
     def __len__(self):
         return int(np.floor(len(self.indices)/self.batch_size))
 
-model = M.load_model('../models/6th_version/voice_button_model_lstm_update_2020-11-16.h5')
+model = M.load_model('../models/6th_version/voice_button_model_lstm_2020-11-18_7.h5')
+
+def build_model_lstm():
+        
+    inp = L.Input(shape=(*DIM,),name='input')
+
+    x = L.BatchNormalization()(inp)
+    
+    x = L.Bidirectional(L.GRU(2,return_sequences=True))(x)
+    
+    x = L.GlobalAveragePooling1D()(x)
+    
+    pred1 = L.Dense(1,activation = 'sigmoid',name = 'dense_f1')(x)
+    
+    model = M.Model(inputs=inp,outputs=pred1)
+    
+    model.compile(loss='binary_crossentropy', optimizer=O.Adam(learning_rate=0.005),metrics=['acc'])
+    
+    return model
 
 def lrfn(epoch, lr):
     lr_max = 0.1
@@ -115,8 +133,8 @@ lr = 0.1
 for i in range(EPOCHS):
   lr = lrfn(i,lr)
   a.append(lr)
-plt.plot(a)
-plt.show()
+#plt.plot(a)
+#plt.show()
 
 print('\n',len(df.label.values),'\n')
 
@@ -130,7 +148,7 @@ history = model.fit(train_gen,
                     steps_per_epoch=len(df.label.values)//BATCH_SIZE)
 
 #model.save('/content/drive/My Drive/voice_model_train/voice_button_model_lstm.h5')
-model.save('../models/6th_version/voice_button_model_lstm_update_2020-11-16_2.h5')
+model.save('../models/6th_version/voice_button_model_lstm_2020-11-18_8.h5')
 
 tf.compat.v1.keras.backend.clear_session()
 

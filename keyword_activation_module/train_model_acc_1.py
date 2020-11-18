@@ -109,7 +109,7 @@ def build_model_lstm():
     
     model = M.Model(inputs=inp,outputs=pred1)
     
-    model.compile(loss='binary_crossentropy', optimizer=O.Adam(learning_rate=0.001),metrics=['acc'])
+    model.compile(loss='binary_crossentropy', optimizer=O.Adam(learning_rate=0.005),metrics=['acc'])
     
     return model
 
@@ -119,7 +119,7 @@ model.summary()
 def lrfn(epoch, lr):
     lr_max = 0.1
     lr_min = 0.000001
-    lr_decay = 0.85
+    lr_decay = 0.92
     epoch_sust  = 2
     if epoch % epoch_sust == 0:
         lr = lr_max * lr_decay**((epoch+1)/0.19) 
@@ -134,8 +134,8 @@ lr = 0.1
 for i in range(EPOCHS):
   lr = lrfn(i,lr)
   a.append(lr)
-plt.plot(a)
-plt.show()
+#plt.plot(a)
+#plt.show()
 
 print('\n',len(df.label.values),'\n')
 
@@ -146,10 +146,11 @@ train_gen = Data_Generator(BATCH_SIZE,
 
 history = model.fit(train_gen,
                     epochs=EPOCHS,
-                    steps_per_epoch=len(df.label.values)//BATCH_SIZE)
+                    steps_per_epoch=len(df.label.values)//BATCH_SIZE
+                    )
 
 #model.save('/content/drive/My Drive/voice_model_train/voice_button_model_lstm.h5')
-model.save('models/6th_version/voice_button_model_lstm_new.h5')
+model.save('models/6th_version/voice_button_model_lstm_18-11-2020.h5')
 
 tf.compat.v1.keras.backend.clear_session()
 
