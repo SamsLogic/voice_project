@@ -142,7 +142,7 @@ while True:
             print(pred_dir)
             print('direction: ',np.argmax(pred_dir,axis=1))
             
-            #torf = int(input('Was it correct (yes : 1 and no : 0)? '))
+            torf = int(input('Was it correct (yes : 1 and no : 0)? '))
             torf = 0
             lb = 1
             if torf == 0:
