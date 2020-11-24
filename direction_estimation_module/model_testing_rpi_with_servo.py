@@ -198,7 +198,7 @@ while True:
             frames.append(frames3)
             for i in range(4):
                 y.append(lb)
-            if m%5==0:
+            if m%10==0:
                 model.fit(np.array(frames,dtype=np.int16),y,batch_size=1,epochs=1)
                 model.save(os.path.join(KEY_DIR,f'models/test_version/voice_button_model_lstm_{today}_run.h5'))
                 frames= []
