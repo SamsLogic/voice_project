@@ -12,17 +12,19 @@ from datetime import date
 SAMPLE_RATE = 16000
 CHANNELS = 4
 RECORD_SECONDS = 3
-BUFFER_SIZE = 1024
+BUFFER_SIZE = 128
 SAMPLE_WIDTH = 2
 
 p = pyaudio.PyAudio()
 
+today = date.today()
+
 try:
-    df = pd.read_csv('voice_data_direction.csv')
+    df = pd.read_csv('voice_data_direction_{today}.csv')
 except:
     df = pd.DataFrame(columns=["name","label","direction_0","direction_1","direction_2","direction_3","direction_4","direction_5","direction_6","direction_7"])
-    df.to_csv('voice_data_direction.csv',index=False)
-    df = pd.read_csv('voice_data_direction.csv')
+    df.to_csv('voice_data_direction_{today}.csv',index=False)
+    df = pd.read_csv('voice_data_direction_{today}.csv')
     
 stream = p.open(format= p.get_format_from_width(SAMPLE_WIDTH),
                 channels=CHANNELS,
@@ -40,8 +42,6 @@ try:
 except:
     i=1
 print(i)
-
-today = date.today()
 
 try:
     os.system('mkdir direction_recordings')
@@ -74,9 +74,12 @@ while True:
             frames2.append(c.tostring())
             frames3.append(d.tostring())
             stream.write(data)
-        lb = int(input('Label: '))
-        #lb = 0
-        direc = int(input('Direction(0,8): '))         
+        #lb = int(input('Label: '))
+        lb = 1
+        if lb == 0:
+            continue
+        #direc = int(input('Direction(0,8): '))         
+        direc = 4
         direction[direc] = 1
         direction_list.append(direction)
         direction_list.append(direction)
@@ -132,12 +135,16 @@ while True:
         i += 1
         
         print("Done")
+        print(i)
         stream.stop_stream() 
+        if i%250 == 0:
+            print('250 done \n Stopping')
+            raise KeyboardInterrupt
     except KeyboardInterrupt:
         direction_list = np.array(direction_list,dtype=np.int16)
         df1 = {"name":name,"label":label,"direction_0":direction_list[:,0],"direction_1":direction_list[:,1],"direction_2":direction_list[:,2],"direction_3":direction_list[:,3],"direction_4":direction_list[:,4],"direction_5":direction_list[:,5],"direction_6":direction_list[:,6],"direction_7":direction_list[:,7]}
         df1 = pd.DataFrame(df1)
-        df1.to_csv('voice_data_direction.csv',mode='a',index=False,header=False)
+        df1.to_csv('voice_data_direction_{today}.csv',mode='a',index=False,header=False)
         print(df1)
         print('Exiting')
         break
