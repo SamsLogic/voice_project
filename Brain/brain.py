@@ -1,6 +1,6 @@
 import time
-from hearing import hear, listen
-from direction_estimation import get_direction
+from hearing.keyword_detection.hearing import hear, listen
+from hearing.direction_estimation.direction_estimation import get_direction
 from threading import Thread
 from queue import Queue
 import os
@@ -11,6 +11,7 @@ import tensorflow.keras.models as M
 
 KEY_DIR = '/home/pi/Project_V/keyword_detection_module/'
 KEYWORD_MODEL = M.load_model(os.path.join(KEY_DIR,'models/test_version/voice_button_model_lstm_2020-11-24_run.h5'))
+
 if __name__ == '__main__':
     print('Starting')
     q = Queue()

@@ -62,7 +62,7 @@ def listen(q,model):
         keyword_detected = 0
         pred = model.predict(voice)
         print(pred)
-        if pred[0] > 0.9 or pred[1]>0.9 or pred[2]>0.9 or pred[3]>0.9:
+        if pred[0] > 0.8 or pred[1]>0.8 or pred[2]>0.8 or pred[3]>0.8:
             break
-    return 1
+    return 1, voice
 
