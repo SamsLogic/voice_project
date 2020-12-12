@@ -22,7 +22,7 @@ if __name__ == '__main__':
     keyword_detected,voice = listen(q,KEYWORD_MODEL)
     print(keyword_detected)
     print('Hello there')
-    direction_voice = get_direction(voice)
+    direction_voice_x,diection_voice_y = get_direction(voice)
     print(direction)
     
     
