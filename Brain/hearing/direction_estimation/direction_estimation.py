@@ -1,4 +1,4 @@
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import numpy as np
 import math
 import wave
@@ -88,7 +88,7 @@ def get_direction(buf,sample_rate=16000):
 
     best_guess = (-best_guess + 120) % 360
     best_guess_lat = (-best_guess_lat + 120) % 360
-
+    best_guess_lat = np.abs((90*(best_guess_lat//90)) - best_guess_lat)
     return best_guess,best_guess_lat
     
 def main():
