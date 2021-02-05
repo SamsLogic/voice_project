@@ -4,8 +4,8 @@ import os
 import pandas as pd
 import shutil
 
-dir = 'C:\\Users\\Sambhav\\Desktop\\voice_\\rpi\\keyword_activation_module\\recordings\\1\\splited'
-data = pd.read_csv('C:\\Users\\Sambhav\\Desktop\\voice_\\rpi\\keyword_activation_module\\recordings\\1\\voice_data_l1.csv')
+dir = 'C:\\Users\\Sambhav\\Desktop\\voice_\\rpi\\keyword_activation_module\\recordings\\1\\splited\\0'
+data = pd.read_csv('C:\\Users\\Sambhav\\Desktop\\voice_\\rpi\\keyword_activation_module\\recordings\\1\\splited\\0\\voice_data_l1_copy.csv')
 
 print('Started')
 counter=0

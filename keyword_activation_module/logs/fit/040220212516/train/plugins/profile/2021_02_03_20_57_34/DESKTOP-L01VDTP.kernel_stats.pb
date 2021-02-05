@@ -1,0 +1,273 @@
+
+£
+s_ZN5cudnn3cnn17wgrad_alg0_engineIfLi512ELi6ELi5ELi3ELi3ELi3ELb0ELi512EEEviiiPKT_iPS2_S4_18kernel_grad_paramsyifiiii*28ò“Ê@Ä≠H∫˚0bcluster_0_1/xla_runh*
+Æ
+~_Z23implicit_convolve_sgemmIffLi1024ELi5ELi5ELi3ELi3ELi3ELi1ELb0ELb1ELb1EEviiiPKT_iPT0_S2_18kernel_conv_paramsyiffiPKS3_S7_bii*28´Úπ@úÖ!Hº¬!bcluster_1_1/xla_runh
+F
+select_and_scatter_533*28Ì¸™@‹û H‹Á bcluster_0_1/xla_runh
+9
+	fusion_15*28±«˙@¸ÖH¸Ωbcluster_0_1/xla_runh
+9
+	fusion_38*28“¯Í@ºçHúÙbcluster_1_1/xla_runh
+9
+	fusion_11*28Ÿ≠”@ΩíHúbcluster_0_1/xla_runh
+8
+fusion_6*28∫ÕÀ@˝ŸHΩñbcluster_0_1/xla_runh
+ù
+m_ZN5cudnn6detail12dgrad_engineIfLi128ELi6ELi7ELi3ELi3ELi5ELb0EEEviiiPKT_iS4_iPS2_18kernel_grad_paramsyiyifiii*28æÙí@˝ÆHù˜bcluster_0_1/xla_runh
+\
+sgemm_32x32x32_NN_vec*28ä¬°@Ä2HÄΩXb(gradients/CudnnRNN_grad/CudnnRNNBackprophâ
+:
+sgemm_32x32x32_NN_vec*28®√ë@¿(HÄ¶bCudnnRNNhâ
+9
+	fusion_25*28êØÅ@ùÑHù◊bcluster_1_1/xla_runh
+9
+	fusion_20*28µ®Ë@ûªHûÙbcluster_1_1/xla_runh
+9
+	fusion_24*28ìâÁ@æ¡HæÕbcluster_1_1/xla_runh
+9
+	fusion_16*28◊¨…@˛«Hæbcluster_0_1/xla_runh
+A
+reduce_window_119*28ôΩ§@æÃHæ™bcluster_1_1/xla_runh
+§
+t_Z26precomputed_convolve_sgemmIfLi128ELi5ELi5ELi3ELi3ELi3ELi1ELb0EEviiiPKT_iPS0_S2_18kernel_conv_paramsyiffiS2_S2_Pi*28ﬁΩ˛@˛»Hû…bcluster_1_1/xla_runh
+£
+s_ZN5cudnn3cnn17wgrad_alg0_engineIfLi128ELi5ELi5ELi3ELi3ELi3ELb0ELi512EEEviiiPKT_iPS2_S4_18kernel_grad_paramsyifiiii*28Âæ˙@ø∫
+Hﬁπbcluster_0_1/xla_runh
+√
+û_Z19LSTM_elementWise_fpIfffL18cudnnRNNBiasMode_t2EEviiiiPKT_S3_S3_S3_N5cudnn15reduced_divisorEPS1_PT0_S6_S3_S6_bi18cudnnRNNClipMode_t21cudnnNanPropagation_tff*28Ä∆Ù@ÄH†nbCudnnRNNh·
+±
+k_Z20LSTM_elementWise_bp1IfffEviiPT_S1_S1_S1_S1_S1_S1_PT0_S3_ii18cudnnRNNClipMode_t21cudnnNanPropagation_tff*28ùâÁ@ÄHˇzXb(gradients/CudnnRNN_grad/CudnnRNNBackproph·
+9
+	fusion_19*28Ë‰‹@ﬂ˛	HﬂÅbcluster_1_1/xla_runh
+9
+	fusion_23*28∆•Õ@ø±	Hû¥
+bcluster_1_1/xla_runh
+ù
+m_ZN5cudnn6detail12dgrad_engineIfLi512ELi6ELi5ELi3ELi3ELi3ELb0EEEviiiPKT_iS4_iPS2_18kernel_grad_paramsyiyifiii*28≈“Ã@ﬂÄ	Hﬁ˝
+bcluster_0_1/xla_runh
+8
+reduce_3*28È°∆@ˇá	HˇÙ	bcluster_0_1/xla_runh
+8
+fusion_1*28Ëü¬@ﬂÁHﬁ’	bcluster_1_1/xla_runh
+8
+reduce_4*28Ü‡¡@ˇHüﬁ	bcluster_0_1/xla_runh
+8
+reduce_5*28™∆∑@ﬂøHˇá	bcluster_0_1/xla_runh
+6
+reduce*28ÀÔµ@üêHﬂæ	bcluster_1_1/xla_runh
+8
+reduce_1*28©ïµ@øôHøﬂ	bcluster_1_1/xla_runh
+9
+	fusion_39*28≠Çï@Ä‘Hüøbcluster_1_1/xla_runh
+9
+	fusion_23*28ë˝ì@øHøûbcluster_0_1/xla_runh
+¨
+}_Z23implicit_convolve_sgemmIffLi128ELi5ELi5ELi3ELi3ELi3ELi1ELb0ELb1ELb1EEviiiPKT_iPT0_S2_18kernel_conv_paramsyiffiPKS3_S7_bii*28Ô≤}@‡’Hü¥bcluster_1_1/xla_runh
+8
+	fusion_28*28Ûœy@ø∫HˇÉbcluster_0_1/xla_runh
+Z
+sgemm_32x32x32_TN_vec*28ˆ≤y@‡,Hü˝Xb(gradients/CudnnRNN_grad/CudnnRNNBackproph?
+8
+	fusion_47*28‘†q@‡ôHø∆bcluster_0_1/xla_runh
+„
+î_ZN10tensorflow7functor28FillPhiloxRandomKernelLaunchINS_6random19UniformDistributionINS2_12PhiloxRandomEfEEEEvPKyS7_S4_PNT_17ResultElementTypeExS8_*28≥ﬁc@‡¢Høâb2model/dropout/dropout/random_uniform/RandomUniformh
+8
+	fusion_32*28÷ `@ﬂ∫Hﬂ€bcluster_0_1/xla_runh
+5
+fusion*28≥ÊQ@øÿH¿âbcluster_1_1/xla_runh
+E
+select_and_scatter_313*28¥≤Q@üÿH¿äbcluster_0_1/xla_runh
+8
+	fusion_12*28ÛéF@ø¸H†⁄bcluster_1_1/xla_runh
+v
+H_ZN5cudnn3ops24scalePackedTensor_kernelIffEEv19cudnnTensor4dStructPT_T0_*28◊„?@†HH‡—bcluster_0_1/xla_runh*
+8
+	fusion_41*28˙‘8@¿–H†ﬂbcluster_0_1/xla_runh
+8
+	fusion_37*28˜º8@Ä H†Óbcluster_0_1/xla_runh
+8
+	fusion_40*28ªÃ7@†õHÄ˜bcluster_1_1/xla_runh
+8
+	fusion_33*28∏’0@ﬂìH¿Œbcluster_0_1/xla_runh
+7
+fusion_3*28ﬁ˝+@†ÍHÄ¢bcluster_1_1/xla_runh
+8
+	fusion_54*28ªÊ&@‡—HˇÅbcluster_0_1/xla_runh
+8
+	fusion_15*28¸¨&@ü›H†¯bcluster_1_1/xla_runh
+E
+select_and_scatter_143*28∫á!@ÄªH†ﬁbcluster_0_1/xla_runh
+8
+	fusion_16*28æ™@†§H†’bcluster_1_1/xla_runh
+7
+reduce_1*28ª◊@¿®H¿Ãbcluster_0_1/xla_runh
+8
+	fusion_17*28Ωñ@†§HÄ«bcluster_1_1/xla_runh
+ú
+Ù_ZN5Eigen8internal15EigenMetaKernelINS_15TensorEvaluatorIKNS_14TensorAssignOpINS_9TensorMapINS_6TensorIjLi3ELi1ExEELi16ENS_11MakePointerEEEKNS_17TensorShufflingOpIKNS_5arrayIiLy3EEEKNS4_INS5_IKjLi3ELi1ExEELi16ES7_EEEEEENS_9GpuDeviceEEExEEvT_T0_*28ûî@ü®H¿≈btranspose_0h
+8
+	fusion_27*28ùﬂ@‡êHÄÆbcluster_1_1/xla_runh
+≥
+Ù_ZN5Eigen8internal15EigenMetaKernelINS_15TensorEvaluatorIKNS_14TensorAssignOpINS_9TensorMapINS_6TensorIjLi3ELi1ExEELi16ENS_11MakePointerEEEKNS_17TensorShufflingOpIKNS_5arrayIiLy3EEEKNS4_INS5_IKjLi3ELi1ExEELi16ES7_EEEEEENS_9GpuDeviceEEExEEvT_T0_*28úá@‡ìH†úb"gradients/transpose_grad/transposeh
+7
+reduce_3*28ˇÆ@¿ÄHø«bcluster_1_1/xla_runh
+@
+reduce_window_193*28ø÷@¿àH¿®bcluster_1_1/xla_runh
+‰
+î_ZN10tensorflow7functor28FillPhiloxRandomKernelLaunchINS_6random19UniformDistributionINS2_12PhiloxRandomEfEEEEvPKyS7_S4_PNT_17ResultElementTypeExS8_*28¸π@‡xHˇ•b4model/dropout_2/dropout/random_uniform/RandomUniformh
+6
+fusion_4*28úÆ@ˇ{H†öbcluster_2_1/xla_runh
+¶
+a_Z23GENERIC_elementWise_bp2IfffLi4EL18cudnnRNNBiasMode_t2EEviiPT_S2_N5cudnn15reduced_divisorEPT0_*28ºÅ@ÄHﬂéXb(gradients/CudnnRNN_grad/CudnnRNNBackproph
+4
+reduce*28ù°@ÄtH‡Öbcluster_0_1/xla_runh
+‰
+î_ZN10tensorflow7functor28FillPhiloxRandomKernelLaunchINS_6random19UniformDistributionINS2_12PhiloxRandomEfEEEEvPKyS7_S4_PNT_17ResultElementTypeExS8_*28¿∫@ÄrHÄùb4model/dropout_1/dropout/random_uniform/RandomUniformh
+å
+j_Z36transpose_readWrite_alignment_kernelIffLi1ELb0ELi6ELi5ELi3EEv21cublasTransposeParamsIT0_EPKT_PS3_PKS1_*28˚é@¿"H†SbCudnnRNNh*
+7
+	fusion_56*28¿Ì@ÄhH¿îbcluster_0_1/xla_runh
+5
+reduce_2*28Ä∞@ÄiH¿wbcluster_1_1/xla_runh
+6
+fusion_8*28ú˝@ÄeHﬂöbcluster_2_1/xla_runh
+7
+	fusion_11*28üÈ@†XHﬂ¢bcluster_1_1/xla_runh
+5
+reduce_2*28Ä»@†bHÄhbcluster_0_1/xla_runh
+5
+fusion_5*28ˇˆ@‡NHÄgbcluster_1_1/xla_runh
+6
+	fusion_58*28˛·@‡KHÄ}bcluster_0_1/xla_runh
+3
+fusion*28æ©@¿ZH‡abcluster_3_1/xla_runh
+3
+fusion*28ˇó@†WH¿`bcluster_8_1/xla_runh
+5
+reduce_5*28úã@ﬂGH‡qbcluster_1_1/xla_runh
+5
+reduce_4*28Ä´@¿PH‡abcluster_1_1/xla_runh
+5
+fusion_2*28ˇã@†NHÄmbcluster_1_1/xla_runh
+5
+fusion_7*28¿‹@†LH‡abcluster_0_1/xla_runh
+6
+	fusion_24*28ΩØ@‡KHﬂVbcluster_0_1/xla_runh
+6
+	fusion_43*28æÆ@†KHÄWbcluster_0_1/xla_runh
+é
+O_ZN10tensorflow7functor15ApplyAdamKernelIfEEviPT_S3_S3_PKS2_S5_S5_S5_S5_S5_S5_b*28›®@ÄHH†kb%Adam/Adam/update_12/ResourceApplyAdamh
+é
+O_ZN10tensorflow7functor15ApplyAdamKernelIfEEviPT_S3_S3_PKS2_S5_S5_S5_S5_S5_S5_b*28úˇ@ÄGHÄab%Adam/Adam/update_13/ResourceApplyAdamh
+>
+reduce_window_263*28øÚ@¿:H¿Wbcluster_1_1/xla_runh
+6
+	fusion_23*28û‹@¿IH¿Qbcluster_2_1/xla_runh
+6
+	fusion_60*28æ∏@‡BH‡Kbcluster_0_1/xla_runh
+5
+fusion_9*28æ¥@†AH‡Obcluster_1_1/xla_runh
+4
+fusion*28ÄØ@ÄAH¿Ibcluster_10_1/xla_runh
+3
+fusion*28üÊ
+@Ä>H¿Jbcluster_9_1/xla_runh
+5
+fusion_8*28ﬂ∞
+@Ä;H¿fbcluster_1_1/xla_runh
+9
+fusion_33__2*28üô
+@†/H†Sbcluster_2_1/xla_runh
+é
+O_ZN10tensorflow7functor15ApplyAdamKernelIfEEviPT_S3_S3_PKS2_S5_S5_S5_S5_S5_S5_b*28†ˆ	@‡%H†Gb%Adam/Adam/update_14/ResourceApplyAdamh
+4
+copy_57*28‡Ê	@‡4H†Fbcluster_0_1/xla_runh
+6
+	fusion_26*28ü∏	@Ä7H¿Hbcluster_1_1/xla_runh
+6
+	fusion_10*28ﬂà	@†1H¿^bcluster_1_1/xla_runh
+6
+	fusion_18*28‡≈@¿1H¿=bcluster_1_1/xla_runh
+6
+	fusion_16*28ﬂ√@†0H‡6bcluster_2_1/xla_runh
+6
+	fusion_61*28ﬁ∫@Ä0H‡7bcluster_0_1/xla_runh
+6
+	fusion_42*28ü®@¿"H‡Cbcluster_1_1/xla_runh
+4
+copy_57*28ﬂò@¿*H¿Fbcluster_1_1/xla_runh
+4
+add_266*28æí@‡)Hˇ>bcluster_2_1/xla_runh
+6
+	fusion_41*28ˇè@¿ H‡3bcluster_1_1/xla_runh
+6
+	fusion_30*28ﬁå@¿,H†8bcluster_2_1/xla_runh
+6
+	fusion_43*28ø˝@‡H†9bcluster_1_1/xla_runh
+4
+copy_50*28û˙@Ä,HÄCbcluster_1_1/xla_runh
+3
+fusion*28ˇ¨@‡(H†7bcluster_2_1/xla_runh
+5
+fusion_6*28ﬁﬁ@‡&H‡+bcluster_4_1/xla_runh
+4
+copy_72*28‡‹@‡&H¿-bcluster_0_1/xla_runh
+5
+fusion_6*28Ä–@Ä#H†3bcluster_2_1/xla_runh
+5
+fusion_1*28øƒ@‡"H†-bcluster_2_1/xla_runh
+c
+6_ZN5cudnn3cnn23kern_precompute_indicesILb0EEEvPiiiiiii*28¿≤@¿!H¿7bcluster_1_1/xla_runh
+6
+	fusion_50*28Ä≠@‡"H¿-bcluster_0_1/xla_runh
+6
+	fusion_21*28æö@ˇ!HÄ-bcluster_2_1/xla_runh
+6
+	fusion_36*28Äã@Ä H¿+bcluster_2_1/xla_runh
+6
+	fusion_33*28¿Ö@ÄHÄ+bcluster_2_1/xla_runh
+6
+	fusion_48*28øÖ@¿ H¿-bcluster_2_1/xla_runh
+√
+û_ZN5Eigen8internal15EigenMetaKernelINS_15TensorEvaluatorIKNS_14TensorAssignOpINS_9TensorMapINS_6TensorIfLi1ELi1EiEELi16ENS_11MakePointerEEEKNS_19TensorCwiseBinaryOpINS0_13div_no_nan_opIfEEKNS4_INS5_IKfLi1ELi1EiEELi16ES7_EEKNS4_INS5_ISC_Li1ELi1ExEELi16ES7_EEEEEENS_9GpuDeviceEEExEEvT_T0_*28ø@ˇ!HÄ)b
+div_no_nanh
+9
+fusion_33__1*28øÍ@†!H¿,bcluster_2_1/xla_runh
+4
+add_368*28†≈@‡ H†(bcluster_2_1/xla_runh
+6
+	fusion_49*28†ƒ@¿HÄ*bcluster_2_1/xla_runh
+6
+	fusion_45*28ø¥@†H†&bcluster_1_1/xla_runh
+¥
+Ñ_ZN5Eigen8internal15EigenMetaKernelINS_15TensorEvaluatorIKNS_14TensorAssignOpINS_9TensorMapINS_6TensorIfLi1ELi1ExEELi16ENS_11MakePointerEEEKNS_19TensorCwiseBinaryOpINS0_13scalar_sum_opIKfSB_EEKS8_KNS4_INS5_ISB_Li1ELi1ExEELi16ES7_EEEEEENS_9GpuDeviceEEExEEvT_T0_*28‡ò@ÄH‡!bAssignAddVariableOp_1h
+6
+	fusion_27*28üç@‡H†*bcluster_2_1/xla_runh
+6
+	fusion_44*28¿Å@†H†!bcluster_1_1/xla_runh
+4
+add_343*28†Ï@†H¿'bcluster_2_1/xla_runh
+4
+add_331*28†Í@‡H‡"bcluster_2_1/xla_runh
+6
+	fusion_42*28¿‚@¿H‡(bcluster_2_1/xla_runh
+3
+add_39*28ﬂ‡@†Høbcluster_4_1/xla_runh
+4
+add_356*28üÃ@¿H¿bcluster_2_1/xla_runh
+3
+add_11*28†®@‡HÄbcluster_7_1/xla_runh
+3
+fusion*28ø£@¿H‡bcluster_7_1/xla_runh
+4
+slice_1*28Ä¢@†HÄbcluster_9_1/xla_runh
+3
+fusion*28†ï@‡H‡bcluster_5_1/xla_runh
+¥
+Ñ_ZN5Eigen8internal15EigenMetaKernelINS_15TensorEvaluatorIKNS_14TensorAssignOpINS_9TensorMapINS_6TensorIfLi1ELi1ExEELi16ENS_11MakePointerEEEKNS_19TensorCwiseBinaryOpINS0_13scalar_sum_opIKfSB_EEKS8_KNS4_INS5_ISB_Li1ELi1ExEELi16ES7_EEEEEENS_9GpuDeviceEEExEEvT_T0_*28ˇè@†H¿bAssignAddVariableOp_7h
+3
+fusion*28‡â@ÄHÄbcluster_6_1/xla_runh
+«
+£_ZN5Eigen8internal15EigenMetaKernelINS_15TensorEvaluatorIKNS_14TensorAssignOpINS_9TensorMapINS_6TensorIbLi1ELi1EiEELi16ENS_11MakePointerEEEKNS_19TensorCwiseBinaryOpINS0_21scalar_boolean_and_opEKNS4_INS5_IKbLi1ELi1EiEELi16ES7_EEKNS4_INS5_ISB_Li1ELi1ExEELi16ES7_EEEEEENS_9GpuDeviceEEExEEvT_T0_*28¿"@¿"H¿"b
+LogicalAndh
