@@ -18,6 +18,7 @@ from sklearn.utils.class_weight import compute_class_weight
 import tensorflow.keras.backend as K
 from IPython import display
 import multiprocessing
+import soundfile as sf
 
 K.clear_session()
 today = datetime.date.today()
@@ -39,6 +40,7 @@ logical_gpus = tf.config.experimental.list_logical_devices('GPU')
 
 dir = 'D:\\voice_data_for_wake_word\\LibriSpeech\\consolidated_audio'
 model_dir = 'C:\\Users\\Sambhav\\Desktop\\voice_\\rpi\\keyword_activation_module'
+csv_dir = 'C:\\Users\\Sambhav\\Desktop\\voice_\\rpi\\keyword_activation_module\\recordings\\csvs'
 
 BATCH_SIZE = 32
 SAMPLE_RATE = 16000
@@ -50,7 +52,8 @@ RECORD_SECONDS = 1
 DIM = (SAMPLE_RATE,1)
 AUTOTUNE = tf.data.AUTOTUNE
 
-test_files = tf.io.gfile.glob(dir + '\\test\\*\\*')
+test_files = tf.io.gfile.glob(model_dir+'\\new_test_results\\2021-02-06\\*')
+test_data_labels = pd.read_csv(model_dir+'\\new_test_results\\voice_data_new.csv')
 
 commands = ['0','1']
 
@@ -69,31 +72,25 @@ def get_audio_binary(file_path):
     return audio_binary
 
 def get_waveform_and_label(file_path):
-    label = get_label(file_path)
     audio_binary = get_audio_binary(file_path)
     waveform,_ = tf.audio.decode_wav(audio_binary)
-    return waveform, tf.strings.to_number(label,out_type=tf.int32)
+    return waveform
 
-model = M.load_model(os.path.join(model_dir,'key_model_05022021.h5'))
+model = M.load_model(os.path.join(model_dir,'key_model_04022021.h5'))
+print(test_files)
+print(test_data_labels)
 
-test_ds = tf.data.Dataset.from_tensor_slices(test_files).map(get_waveform_and_label,num_parallel_calls=AUTOTUNE)
+test_ds = tf.data.Dataset.from_tensor_slices(test_files).map(get_waveform_and_label,num_parallel_calls=AUTOTUNE).batch(1)
+for i in test_ds:
+    print(i)
+    a,_ = sf.read(test_files[0])
+    print(a)
+    break
+pred = model.predict(test_ds,verbose=1)
 
-test_audio = []
-test_label = []
-
-for audio,label in test_ds:
-    test_audio.append(audio.numpy())
-    test_label.append(label.numpy())
-
-test_audio = np.array(test_audio)
-test_label = np.array(test_label)
-
-print(test_audio.shape)
-print(len(test_audio))
-
-pred = model.predict(test_audio,batch_size=1,verbose=1)
-
-def plot_cm(labels, predictions, p=0.5):
+print(pred)
+test_label = test_data_labels.label.values 
+def plot_cm(labels, predictions, p=0.9):
     cm = tf.math.confusion_matrix(labels, predictions > p)
     plt.figure(figsize=(5,5))
     sns.heatmap(cm, annot=True, fmt="d")
@@ -101,10 +98,9 @@ def plot_cm(labels, predictions, p=0.5):
     plt.ylabel('Actual label')
     plt.xlabel('Predicted label')
     plt.show()
-    print('Legitimate Transactions Detected (True Negatives): ', cm[0][0])
-    print('Legitimate Transactions Incorrectly Detected (False Positives): ', cm[0][1])
-    print('Fraudulent Transactions Missed (False Negatives): ', cm[1][0])
-    print('Fraudulent Transactions Detected (True Positives): ', cm[1][1])
-    print('Total Fraudulent Transactions: ', np.sum(cm[1]))
+    print('True Negatives: ', cm[0][0])
+    print('False Positives: ', cm[0][1])
+    print('False Negatives: ', cm[1][0])
+    print('True Positives: ', cm[1][1])
 
 plot_cm(test_label,pred)
