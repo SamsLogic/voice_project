@@ -12,8 +12,8 @@ MAX_TDOA_4_LAT = MIC_DISTANCE_4_LAT / float(SOUND_SPEED)
 
 def gcc_phat(sig, refsig, fs=1, max_tau=None, interp=16):
     
-    sig = np.reshape(sig,(47104))
-    refsig = np.reshape(refsig,(47104))
+    sig = np.reshape(sig,(16000))
+    refsig = np.reshape(refsig,(16000))
     # make sure the length for the FFT is larger or equal than len(sig) + len(refsig)
     n = sig.shape[0] + refsig.shape[0]
 
@@ -100,20 +100,20 @@ def main():
     frames2 = []
     frames3 = []
     frames4 = []
-    for j in range(256):
-        au1 = audio1.readframes(184)
+    for j in range(128):
+        au1 = audio1.readframes(125)
         au1 = np.fromstring(au1,np.int16)
         for k in au1:
             frames1.append(k)
-        au2 = audio2.readframes(184)
+        au2 = audio2.readframes(125)
         au2 = np.fromstring(au2,np.int16)
         for k in au2:
             frames2.append(k)
-        au3 = audio3.readframes(184)
+        au3 = audio3.readframes(125)
         au3 = np.fromstring(au3,np.int16)
         for k in au3:
             frames3.append(k)
-        au4 = audio4.readframes(184)
+        au4 = audio4.readframes(125)
         au4 = np.fromstring(au4,np.int16)
         for k in au4:
             frames4.append(k)
